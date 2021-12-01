@@ -14,6 +14,7 @@ export const usdt = new StableBond({
     name: "usdt",
     displayName: "USDT",
     bondToken: "USDT",
+    decimals: 6,
     bondIconSvg: USDTIcon,
     bondContractABI: StableBondContract,
     reserveContractAbi: StableReserveContract,

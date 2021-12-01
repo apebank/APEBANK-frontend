@@ -163,7 +163,8 @@ export const calculateUserBondDetails = createAsyncThunk("account/calculateUserB
 
     allowance = await reserveContract.allowance(address, bond.getAddressForBond(networkID));
     balance = await reserveContract.balanceOf(address);
-    const balanceVal = ethers.utils.formatEther(balance);
+    const decimals = await reserveContract.decimals();
+    const balanceVal = decimals == 18 ? ethers.utils.formatEther(balance) : Number(balance) / Math.pow(10, decimals);
 
     const ethBalance = await provider.getSigner().getBalance();
     const etherVal = ethers.utils.formatEther(ethBalance);
