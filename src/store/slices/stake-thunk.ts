@@ -94,9 +94,7 @@ export const changeStake = createAsyncThunk("stake/changeStake", async ({ action
     try {
         const gasPrice = await getGasPrice(provider);
         if (action === "stake") {
-            console.log(value, ethers.utils.parseUnits(value, "gwei"), address);
             stakeTx = await stakingHelper.stake(ethers.utils.parseUnits(value, "gwei"), { gasPrice });
-            console.log({ stakeTx });
         } else {
             stakeTx = await staking.unstake(ethers.utils.parseUnits(value, "gwei"), true, { gasPrice });
         }
