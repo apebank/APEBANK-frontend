@@ -12,7 +12,7 @@ import { getAddresses } from "src/constants";
 
 export const usdt = new StableBond({
     name: "usdt",
-    displayName: "USDT",
+    displayName: "USDC",
     bondToken: "USDT",
     decimals: 6,
     bondIconSvg: USDTIcon,
@@ -53,7 +53,7 @@ export const boba = new CustomBond({
 
 export const usdtAPE = new LPBond({
     name: "usdt_ape_lp",
-    displayName: "APE-USDT LP",
+    displayName: "APE-USDC LP",
     bondToken: "APE",
     bondIconSvg: USDTAPEIcon,
     bondContractABI: LpBondContract,
