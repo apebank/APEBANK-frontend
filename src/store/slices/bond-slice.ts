@@ -205,7 +205,8 @@ interface IBondAsset {
 export const bondAsset = createAsyncThunk("bonding/bondAsset", async ({ value, address, bond, networkID, provider, slippage, useETH }: IBondAsset, { dispatch }) => {
     const depositorAddress = address;
     const acceptedSlippage = slippage / 100 || 0.005;
-    const valueInWei = ethers.utils.parseUnits(value, "ether");
+    const decimals = bond.decimals || 18;
+    const depositValue = BigNumber.from(value).mul(BigNumber.from(Math.pow(10, decimals)));
     const signer = provider.getSigner();
     const bondContract = bond.getContractForBond(networkID, signer);
 
@@ -217,9 +218,9 @@ export const bondAsset = createAsyncThunk("bonding/bondAsset", async ({ value, a
         const gasPrice = await getGasPrice(provider);
 
         if (useETH) {
-            bondTx = await bondContract.deposit(valueInWei, maxPremium, depositorAddress, { value: valueInWei, gasPrice });
+            bondTx = await bondContract.deposit(depositValue, maxPremium, depositorAddress, { value: depositValue, gasPrice });
         } else {
-            bondTx = await bondContract.deposit(valueInWei, maxPremium, depositorAddress, { gasPrice });
+            bondTx = await bondContract.deposit(depositValue, maxPremium, depositorAddress, { gasPrice });
         }
         dispatch(
             fetchPendingTxns({

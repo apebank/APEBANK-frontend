@@ -55,7 +55,7 @@ export const loadAppDetails = createAsyncThunk(
         const fiveDayRate = Math.pow(1 + stakingRebase, 5 * 3) - 1;
         const stakingAPY = Math.pow(1 + stakingRebase, 365 * 3) - 1;
 
-        console.log({ stakingAPY, stakingReward, circ, stakingRebase });
+        console.log({ stakingAPY, stakingReward: Number(stakingReward), circ: Number(circ), stakingRebase });
 
         const currentIndex = await stakingContract.index();
         const nextRebase = epoch.endTime;
