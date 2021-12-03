@@ -4,7 +4,7 @@
             "inputs": [
                 {
                     "internalType": "address",
-                    "name": "_Time",
+                    "name": "_OHM",
                     "type": "address"
                 },
                 {
@@ -196,7 +196,7 @@
         },
         {
             "inputs": [],
-            "name": "Time",
+            "name": "OHM",
             "outputs": [
                 {
                     "internalType": "address",
@@ -227,14 +227,14 @@
                     "type": "uint256"
                 },
                 {
-                    "internalType": "uint32",
+                    "internalType": "uint256",
                     "name": "buffer",
-                    "type": "uint32"
+                    "type": "uint256"
                 },
                 {
-                    "internalType": "uint32",
-                    "name": "lastTime",
-                    "type": "uint32"
+                    "internalType": "uint256",
+                    "name": "lastBlock",
+                    "type": "uint256"
                 }
             ],
             "stateMutability": "view",
@@ -270,18 +270,18 @@
                 },
                 {
                     "internalType": "uint256",
-                    "name": "pricePaid",
+                    "name": "vesting",
                     "type": "uint256"
                 },
                 {
-                    "internalType": "uint32",
-                    "name": "lastTime",
-                    "type": "uint32"
+                    "internalType": "uint256",
+                    "name": "lastBlock",
+                    "type": "uint256"
                 },
                 {
-                    "internalType": "uint32",
-                    "name": "vesting",
-                    "type": "uint32"
+                    "internalType": "uint256",
+                    "name": "pricePaid",
+                    "type": "uint256"
                 }
             ],
             "stateMutability": "view",
@@ -390,6 +390,11 @@
                 },
                 {
                     "internalType": "uint256",
+                    "name": "_vestingTerm",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
                     "name": "_minimumPrice",
                     "type": "uint256"
                 },
@@ -412,11 +417,6 @@
                     "internalType": "uint256",
                     "name": "_initialDebt",
                     "type": "uint256"
-                },
-                {
-                    "internalType": "uint32",
-                    "name": "_vestingTerm",
-                    "type": "uint32"
                 }
             ],
             "name": "initializeBondTerms",
@@ -442,9 +442,9 @@
             "name": "lastDecay",
             "outputs": [
                 {
-                    "internalType": "uint32",
+                    "internalType": "uint256",
                     "name": "",
-                    "type": "uint32"
+                    "type": "uint256"
                 }
             ],
             "stateMutability": "view",
@@ -634,9 +634,9 @@
                     "type": "uint256"
                 },
                 {
-                    "internalType": "uint32",
+                    "internalType": "uint256",
                     "name": "_buffer",
-                    "type": "uint32"
+                    "type": "uint256"
                 }
             ],
             "name": "setAdjustment",
@@ -647,7 +647,7 @@
         {
             "inputs": [
                 {
-                    "internalType": "enum TimeBondDepository.PARAMETER",
+                    "internalType": "enum ApeBondDepository.PARAMETER",
                     "name": "_parameter",
                     "type": "uint8"
                 },
@@ -730,6 +730,11 @@
                 },
                 {
                     "internalType": "uint256",
+                    "name": "vestingTerm",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
                     "name": "minimumPrice",
                     "type": "uint256"
                 },
@@ -747,11 +752,6 @@
                     "internalType": "uint256",
                     "name": "maxDebt",
                     "type": "uint256"
-                },
-                {
-                    "internalType": "uint32",
-                    "name": "vestingTerm",
-                    "type": "uint32"
                 }
             ],
             "stateMutability": "view",

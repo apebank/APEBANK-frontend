@@ -206,13 +206,17 @@ export const bondAsset = createAsyncThunk("bonding/bondAsset", async ({ value, a
     const depositorAddress = address;
     const acceptedSlippage = slippage / 100 || 0.005;
     const decimals = bond.decimals || 18;
-    const depositValue = BigNumber.from(value).mul(BigNumber.from(Math.pow(10, decimals)));
+    const depositValue = Number(value) * Math.pow(10, decimals);
     const signer = provider.getSigner();
     const bondContract = bond.getContractForBond(networkID, signer);
-
     const calculatePremium = await bondContract.bondPrice();
     const maxPremium = Math.round(calculatePremium * (1 + acceptedSlippage));
-
+    console.log({
+        decimals,
+        calculatePremium,
+        depositValue,
+        maxPremium,
+    });
     let bondTx;
     try {
         const gasPrice = await getGasPrice(provider);

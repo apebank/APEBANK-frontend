@@ -4,10 +4,9 @@ import { StableBond, CustomBond } from "./stable-bond";
 
 import USDTIcon from "../../assets/tokens/USDT.png";
 import BobaIcon from "../../assets/tokens/BOBA.png";
-import ApeIcon from "../../assets/tokens/APE.png";
 import USDTAPEIcon from "../../assets/tokens/USDT-APE.png";
 
-import { StableBondContract, LpBondContract, WavaxBondContract, StableReserveContract, LpReserveContract } from "../../abi";
+import { StableBondContract, LpBondContract, WavaxBondContract, StableReserveContract, LpReserveContract, BondDepositoryContract } from "../../abi";
 import { getAddresses } from "src/constants";
 
 export const usdt = new StableBond({
@@ -16,7 +15,7 @@ export const usdt = new StableBond({
     bondToken: "USDT",
     decimals: 6,
     bondIconSvg: USDTIcon,
-    bondContractABI: StableBondContract,
+    bondContractABI: BondDepositoryContract,
     reserveContractAbi: StableReserveContract,
     networkAddrs: {
         [Networks.TESTNET]: {
@@ -36,7 +35,7 @@ export const boba = new CustomBond({
     displayName: "BOBA",
     bondToken: "BOBA",
     bondIconSvg: BobaIcon,
-    bondContractABI: WavaxBondContract,
+    bondContractABI: BondDepositoryContract,
     reserveContractAbi: StableReserveContract,
     networkAddrs: {
         [Networks.TESTNET]: {
@@ -56,7 +55,7 @@ export const usdtAPE = new LPBond({
     displayName: "APE-USDC LP",
     bondToken: "APE",
     bondIconSvg: USDTAPEIcon,
-    bondContractABI: LpBondContract,
+    bondContractABI: BondDepositoryContract,
     reserveContractAbi: LpReserveContract,
     networkAddrs: {
         [Networks.TESTNET]: {

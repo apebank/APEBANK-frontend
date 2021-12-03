@@ -46,7 +46,7 @@ function BondPurchase({ bond, slippage }: IBondPurchaseProps) {
         } else if (bond.interestDue > 0 || bond.pendingPayout > 0) {
             const shouldProceed = window.confirm(messages.existing_bond);
             if (shouldProceed) {
-                const trimBalance = trim(Number(quantity), 10);
+                const trimBalance = trim(Number(quantity), 18);
 
                 await dispatch(
                     bondAsset({
@@ -62,9 +62,8 @@ function BondPurchase({ bond, slippage }: IBondPurchaseProps) {
                 clearInput();
             }
         } else {
-            const trimBalance = trim(Number(quantity), 10);
+            const trimBalance = trim(Number(quantity), 18);
             await dispatch(
-                //@ts-ignore
                 bondAsset({
                     value: trimBalance,
                     slippage,
@@ -89,10 +88,11 @@ function BondPurchase({ bond, slippage }: IBondPurchaseProps) {
 
     const setMax = () => {
         let amount: any = Math.min(bond.maxBondPriceToken * 0.9999, useETH ? bond.ethBalance * 0.99 : bond.balance);
-
+        console.log("before", amount);
         if (amount) {
             amount = trim(amount);
         }
+        console.log("after", amount);
 
         setQuantity((amount || "").toString());
     };
