@@ -11,13 +11,17 @@ function RebaseTimer() {
         return state.app.currentBlockTime;
     });
 
+    const currentBlock = useSelector<IReduxState, number>(state => {
+        return state.app.currentBlock;
+    });
+
     const nextRebase = useSelector<IReduxState, number>(state => {
         return state.app.nextRebase;
     });
 
     const timeUntilRebase = useMemo(() => {
         if (currentBlockTime && nextRebase) {
-            const seconds = secondsUntilBlock(currentBlockTime, nextRebase);
+            const seconds = secondsUntilBlock(currentBlock, nextRebase);
             return prettifySeconds(seconds);
         }
     }, [currentBlockTime, nextRebase]);

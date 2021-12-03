@@ -14,3 +14,5 @@ export interface NetworkAddresses {
     [Networks.TESTNET]: BondAddresses;
     [Networks.MAINNET]: BondAddresses;
 }
+
+export const BLOCK_RATE_SECONDS = 16.8;
