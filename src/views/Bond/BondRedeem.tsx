@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Box, Slide } from "@material-ui/core";
 import { IBondDetails, redeemBond } from "../../store/slices/bond-slice";
 import { useWeb3Context } from "../../hooks";
-import { trim, prettifySeconds, prettyVestingPeriod } from "../../helpers";
+import { trim, prettifySeconds, prettyVestingPeriod, secondsUntilBlock } from "../../helpers";
 import { IPendingTxn, isPendingTxn, txnButtonText } from "../../store/slices/pending-txns-slice";
 import { Skeleton } from "@material-ui/lab";
 import { IReduxState } from "../../store/slices/state.interface";
@@ -23,6 +23,10 @@ function BondRedeem({ bond }: IBondRedeem) {
 
     const currentBlockTime = useSelector<IReduxState, number>(state => {
         return state.app.currentBlockTime;
+    });
+
+    const currentBlock = useSelector<IReduxState, number>(state => {
+        return state.app.currentBlock;
     });
 
     const pendingTransactions = useSelector<IReduxState, IPendingTxn[]>(state => {
@@ -52,11 +56,17 @@ function BondRedeem({ bond }: IBondRedeem) {
         if (!bondDetails) {
             return "";
         }
+        // const vestingBlock = currentBlock + bond.vestingTerm;
+        // const seconds = secondsUntilBlock(currentBlock, vestingBlock);
+        // return prettifySeconds(seconds, "day");
         return prettyVestingPeriod(currentBlockTime, bondDetails.bondMaturationBlock);
     };
 
     const vestingPeriod = () => {
-        return prettifySeconds(bondingState.vestingTerm, "day");
+        const vestingBlock = currentBlock + bond.vestingTerm;
+        const seconds = secondsUntilBlock(currentBlock, vestingBlock);
+        return prettifySeconds(seconds, "day");
+        // return prettifySeconds(bondingState.vestingTerm, "day");
     };
 
     return (

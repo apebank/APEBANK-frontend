@@ -13,6 +13,7 @@ export interface BondOpts {
     readonly networkAddrs: NetworkAddresses; // Mapping of network --> Addresses
     readonly bondToken: string; // Unused, but native token to buy the bond.
     readonly decimals?: number;
+    readonly bondPriceDecimals?: number;
 }
 
 export abstract class Bond {
@@ -26,6 +27,7 @@ export abstract class Bond {
     public readonly lpUrl?: string;
     public readonly tokensInStrategy?: string;
     public readonly decimals?: number;
+    public readonly bondPriceDecimals?: number;
 
     // The following two fields will differ on how they are set depending on bond type
     public abstract isLP: boolean;
@@ -46,6 +48,7 @@ export abstract class Bond {
         this.networkAddrs = bondOpts.networkAddrs;
         this.bondToken = bondOpts.bondToken;
         this.decimals = bondOpts.decimals || 18;
+        this.bondPriceDecimals = bondOpts.bondPriceDecimals || this.decimals;
     }
 
     public getAddressForBond(networkID: Networks) {

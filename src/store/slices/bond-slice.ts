@@ -105,8 +105,8 @@ export const calcBondDetails = createAsyncThunk("bonding/calcBondDetails", async
         bondQuote = 0;
 
     const addresses = getAddresses(networkID);
-
     const bondContract = bond.getContractForBond(networkID, provider);
+    const decimals = bond.decimals || 18;
     const bondCalcContract = getBondCalculator(networkID, provider);
 
     const terms = await bondContract.terms();
@@ -124,6 +124,7 @@ export const calcBondDetails = createAsyncThunk("bonding/calcBondDetails", async
         console.log({
             bondName: bond.name,
             decimals: bond.decimals,
+            bondPriceDecimals: bond.bondPriceDecimals,
             terms,
             bondPrice: Number(bondPrice),
             debtRatio: Number(debtRatio),
@@ -133,7 +134,7 @@ export const calcBondDetails = createAsyncThunk("bonding/calcBondDetails", async
         //     const avaxPrice = getTokenPrice("AVAX");
         //     bondPrice = bondPrice * avaxPrice;
         // }
-        bondDiscount = (marketPrice * Math.pow(10, bond.decimals || 18) - Number(bondPrice.toString())) / Number(bondPrice.toString());
+        bondDiscount = (marketPrice * Math.pow(10, bond.bondPriceDecimals || decimals || 18) - Number(bondPrice.toString())) / Number(bondPrice.toString());
         // bondDiscount = (marketPrice - bondPrice) / bondPrice;
     } catch (e) {
         console.log("error getting bondPriceInUSD", bond.name, e);
@@ -164,7 +165,6 @@ export const calcBondDetails = createAsyncThunk("bonding/calcBondDetails", async
 
     // Calculate bonds purchased
     const token = bond.getContractForReserve(networkID, provider);
-    const decimals = bond.decimals || 18;
     let purchased = await token.balanceOf(addresses.TREASURY_ADDRESS);
     console.log({ purchased: Number(purchased) });
     if (bond.isLP) {
@@ -197,7 +197,7 @@ export const calcBondDetails = createAsyncThunk("bonding/calcBondDetails", async
         purchased,
         vestingTerm: Number(terms.vestingTerm),
         maxBondPrice,
-        bondPrice: bondPrice / Math.pow(10, decimals),
+        bondPrice: bondPrice / Math.pow(10, bond.bondPriceDecimals || bond.decimals || 18),
         marketPrice,
         maxBondPriceToken,
     };

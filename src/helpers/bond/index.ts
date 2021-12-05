@@ -54,7 +54,7 @@ export const usdtAPE = new LPBond({
     name: "usdt_ape_lp",
     displayName: "APE-USDC LP",
     bondToken: "APE",
-    decimals: 6,
+    bondPriceDecimals: 6,
     bondIconSvg: USDTAPEIcon,
     bondContractABI: BondDepositoryContract,
     reserveContractAbi: LpReserveContract,
