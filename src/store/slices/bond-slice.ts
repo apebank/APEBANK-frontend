@@ -119,7 +119,11 @@ export const calcBondDetails = createAsyncThunk("bonding/calcBondDetails", async
 
     try {
         bondPrice = await bondContract.bondPriceInUSD();
-        // if (bond.name === avaxTime.name) {
+        console.log({
+            bondName: bond.name,
+            bondPrice: Number(bondPrice),
+        });
+        // if (bond.name === usdtAPE.name) {
         //     const avaxPrice = getTokenPrice("AVAX");
         //     bondPrice = bondPrice * avaxPrice;
         // }
@@ -187,7 +191,7 @@ export const calcBondDetails = createAsyncThunk("bonding/calcBondDetails", async
         purchased,
         vestingTerm: Number(terms.vestingTerm),
         maxBondPrice,
-        bondPrice: bondPrice / Math.pow(10, 18),
+        bondPrice: bondPrice / Math.pow(10, decimals),
         marketPrice,
         maxBondPriceToken,
     };
