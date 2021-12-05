@@ -119,16 +119,22 @@ export const calcBondDetails = createAsyncThunk("bonding/calcBondDetails", async
 
     try {
         bondPrice = await bondContract.bondPriceInUSD();
+        let debtRatio = await bondContract.debtRatio();
+        let currentDebt = await bondContract.currentDebt();
         console.log({
             bondName: bond.name,
+            decimals: bond.decimals,
+            terms,
             bondPrice: Number(bondPrice),
+            debtRatio: Number(debtRatio),
+            currentDebt: Number(currentDebt),
         });
         // if (bond.name === usdtAPE.name) {
         //     const avaxPrice = getTokenPrice("AVAX");
         //     bondPrice = bondPrice * avaxPrice;
         // }
-
-        bondDiscount = (marketPrice - bondPrice) / bondPrice;
+        bondDiscount = (marketPrice * Math.pow(10, bond.decimals || 18) - Number(bondPrice.toString())) / Number(bondPrice.toString());
+        // bondDiscount = (marketPrice - bondPrice) / bondPrice;
     } catch (e) {
         console.log("error getting bondPriceInUSD", bond.name, e);
     }
@@ -158,7 +164,7 @@ export const calcBondDetails = createAsyncThunk("bonding/calcBondDetails", async
 
     // Calculate bonds purchased
     const token = bond.getContractForReserve(networkID, provider);
-    const decimals = await token.decimals();
+    const decimals = bond.decimals || 18;
     let purchased = await token.balanceOf(addresses.TREASURY_ADDRESS);
     console.log({ purchased: Number(purchased) });
     if (bond.isLP) {
