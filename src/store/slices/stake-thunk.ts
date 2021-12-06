@@ -27,19 +27,18 @@ export const changeApproval = createAsyncThunk("stake/changeApproval", async ({ 
     const addresses = getAddresses(networkID);
 
     const signer = provider.getSigner();
-    const timeContract = new ethers.Contract(addresses.APE_ADDRESS, APETokenContract, signer);
-    const memoContract = new ethers.Contract(addresses.sAPE_ADDRESS, sAPETokenContract, signer);
+    const apeContract = new ethers.Contract(addresses.APE_ADDRESS, APETokenContract, signer);
+    const sAPEContract = new ethers.Contract(addresses.sAPE_ADDRESS, sAPETokenContract, signer);
 
     let approveTx;
     try {
         const gasPrice = await getGasPrice(provider);
-
         if (token === "ape") {
-            approveTx = await timeContract.approve(addresses.STAKING_HELPER_ADDRESS, ethers.constants.MaxUint256, { gasPrice });
+            approveTx = await apeContract.approve(addresses.STAKING_HELPER_ADDRESS, ethers.constants.MaxUint256, { gasPrice });
         }
 
         if (token === "sape") {
-            approveTx = await memoContract.approve(addresses.STAKING_ADDRESS, ethers.constants.MaxUint256, { gasPrice });
+            approveTx = await sAPEContract.approve(addresses.STAKING_ADDRESS, ethers.constants.MaxUint256, { gasPrice });
         }
 
         const text = "Approve " + (token === "ape" ? "Staking" : "Unstaking");
@@ -58,8 +57,8 @@ export const changeApproval = createAsyncThunk("stake/changeApproval", async ({ 
 
     await sleep(2);
 
-    const stakeAllowance = await timeContract.allowance(address, addresses.STAKING_HELPER_ADDRESS);
-    const unstakeAllowance = await memoContract.allowance(address, addresses.STAKING_ADDRESS);
+    const stakeAllowance = await apeContract.allowance(address, addresses.STAKING_HELPER_ADDRESS);
+    const unstakeAllowance = await sAPEContract.allowance(address, addresses.STAKING_ADDRESS);
 
     return dispatch(
         fetchAccountSuccess({
