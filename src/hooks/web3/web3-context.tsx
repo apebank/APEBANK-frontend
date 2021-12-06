@@ -63,6 +63,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
                 walletconnect: {
                     package: WalletConnectProvider,
                     options: {
+                        infuraId: "13c6768531764bf5aa1d007b125f6d6a", // required
                         rpc: {
                             [Networks.MAINNET]: getMainnetURI(),
                             [Networks.TESTNET]: getTestnetURI(),
