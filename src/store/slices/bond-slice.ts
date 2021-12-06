@@ -166,13 +166,12 @@ export const calcBondDetails = createAsyncThunk("bonding/calcBondDetails", async
     // Calculate bonds purchased
     const token = bond.getContractForReserve(networkID, provider);
     let purchased = await token.balanceOf(addresses.TREASURY_ADDRESS);
-    console.log({ purchased: Number(purchased) });
     if (bond.isLP) {
         const assetAddress = bond.getAddressForReserve(networkID);
         const markdown = await bondCalcContract.markdown(assetAddress);
 
         purchased = await bondCalcContract.valuation(assetAddress, purchased);
-        purchased = (markdown / Math.pow(10, 18)) * (purchased / Math.pow(10, 9));
+        purchased = (markdown / Math.pow(10, bond.bondPriceDecimals || 18)) * (purchased / Math.pow(10, 9));
 
         // if (bond.name === avaxTime.name) {
         //     const avaxPrice = getTokenPrice("AVAX");
