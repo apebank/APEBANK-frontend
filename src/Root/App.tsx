@@ -16,7 +16,7 @@ import useTokens from "../hooks/tokens";
 function App() {
     const dispatch = useDispatch();
 
-    const { connect, provider, hasCachedProvider, chainID, connected } = useWeb3Context();
+    const { connect, provider, hasCachedProvider, chainID, connected, disconnect } = useWeb3Context();
     const address = useAddress();
 
     const [walletChecked, setWalletChecked] = useState(false);
@@ -76,9 +76,14 @@ function App() {
 
     useEffect(() => {
         if (hasCachedProvider()) {
-            connect().then(() => {
-                setWalletChecked(true);
-            });
+            connect()
+                .then(() => {
+                    setWalletChecked(true);
+                })
+                .catch(ex => {
+                    console.error("connect failed", ex);
+                    disconnect();
+                });
         } else {
             setWalletChecked(true);
         }

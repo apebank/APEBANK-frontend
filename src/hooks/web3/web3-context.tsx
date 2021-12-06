@@ -120,7 +120,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
         setProviderChainID(chainId);
 
-        if (chainId === Networks.MAINNET || chainID == Networks.TESTNET) {
+        if (chainId == Networks.MAINNET || chainID == Networks.TESTNET) {
             setProvider(connectedProvider);
         }
 
