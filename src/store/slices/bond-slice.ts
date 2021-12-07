@@ -121,15 +121,17 @@ export const calcBondDetails = createAsyncThunk("bonding/calcBondDetails", async
         bondPrice = await bondContract.bondPriceInUSD();
         let debtRatio = await bondContract.debtRatio();
         let currentDebt = await bondContract.currentDebt();
-        console.log({
-            bondName: bond.name,
-            decimals: bond.decimals,
-            bondPriceDecimals: bond.bondPriceDecimals,
-            terms,
-            bondPrice: Number(bondPrice),
-            debtRatio: Number(debtRatio),
-            currentDebt: Number(currentDebt),
-        });
+
+        // console.log({
+        //     bondName: bond.name,
+        //     decimals: bond.decimals,
+        //     bondPriceDecimals: bond.bondPriceDecimals,
+        //     terms,
+        //     bondPrice: Number(bondPrice),
+        //     debtRatio: Number(debtRatio),
+        //     currentDebt: Number(currentDebt),
+        // });
+
         // if (bond.name === usdtAPE.name) {
         //     const avaxPrice = getTokenPrice("AVAX");
         //     bondPrice = bondPrice * avaxPrice;
@@ -153,10 +155,10 @@ export const calcBondDetails = createAsyncThunk("bonding/calcBondDetails", async
         maxBondPriceToken = maxBondPrice / (maxBondQuote * Math.pow(10, -9));
     } else {
         bondQuote = await bondContract.payoutFor(amountInWei);
-        bondQuote = bondQuote / Math.pow(10, 18);
+        bondQuote = bondQuote / Math.pow(10, bond.decimals || 18);
 
         const maxBondQuote = await bondContract.payoutFor(maxBodValue);
-        maxBondPriceToken = maxBondPrice / (maxBondQuote * Math.pow(10, -18));
+        maxBondPriceToken = maxBondPrice / (maxBondQuote * Math.pow(10, -(bond.decimals || 18)));
     }
 
     if (!!value && bondQuote > maxBondPrice) {
@@ -215,12 +217,13 @@ export const bondAsset = createAsyncThunk("bonding/bondAsset", async ({ value, a
     const depositorAddress = address;
     const acceptedSlippage = slippage / 100 || 0.005;
     const decimals = bond.decimals || 18;
-    const depositValue = Number(value) * Math.pow(10, decimals);
+    const depositValue = ethers.utils.parseUnits(value, decimals); //BigNumber.from(value).mul(Math.pow(10, decimals));
     const signer = provider.getSigner();
     const bondContract = bond.getContractForBond(networkID, signer);
     const calculatePremium = await bondContract.bondPrice();
     const maxPremium = Math.round(calculatePremium * (1 + acceptedSlippage));
-    console.log({
+    console.log("bondAsset", {
+        value,
         decimals,
         calculatePremium,
         depositValue,
@@ -278,7 +281,6 @@ export const redeemBond = createAsyncThunk("bonding/redeemBond", async ({ addres
     let redeemTx;
     try {
         const gasPrice = await getGasPrice(provider);
-
         redeemTx = await bondContract.redeem(address, autostake === true, { gasPrice });
         const pendingTxnType = "redeem_bond_" + bond.name + (autostake === true ? "_autostake" : "");
         dispatch(

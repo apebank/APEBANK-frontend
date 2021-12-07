@@ -199,7 +199,7 @@ function BondPurchase({ bond, slippage }: IBondPurchaseProps) {
                                 <Skeleton width="100px" />
                             ) : (
                                 <>
-                                    {trim(useETH ? bond.ethBalance : bond.balance, 4)} {displayUnits}
+                                    {trim(useETH ? bond.ethBalance : bond.balance, 10)} {displayUnits}
                                 </>
                             )}
                         </p>

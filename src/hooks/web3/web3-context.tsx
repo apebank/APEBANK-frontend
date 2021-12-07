@@ -133,6 +133,8 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
         if (providerChainID !== DEFAULD_NETWORK) {
             const shouldSwitch = window.confirm(messages.switch_to_right_network);
             if (shouldSwitch) {
+                web3Modal.clearCachedProvider();
+                setConnected(false);
                 await swithNetwork();
                 window.location.reload();
             }
