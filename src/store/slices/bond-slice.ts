@@ -158,7 +158,7 @@ export const calcBondDetails = createAsyncThunk("bonding/calcBondDetails", async
         bondQuote = bondQuote / Math.pow(10, bond.decimals || 18);
 
         const maxBondQuote = await bondContract.payoutFor(maxBodValue);
-        maxBondPriceToken = maxBondPrice / (maxBondQuote * Math.pow(10, -(bond.decimals || 18)));
+        maxBondPriceToken = maxBondPrice / (maxBondQuote * Math.pow(10, -18));
     }
 
     if (!!value && bondQuote > maxBondPrice) {
